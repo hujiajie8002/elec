@@ -1,0 +1,76 @@
+<form id="edit-form" class="form-horizontal" role="form" data-toggle="validator" method="POST" action="">
+    {:token()}
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('District_id')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-district_id" data-rule="required" data-source="district/index" class="form-control selectpage" name="row[district_id]" type="text" value="{$row.district_id|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Unity_token')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-unity_token" class="form-control" name="row[unity_token]" type="text" value="{$row.unity_token|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group" style="display:none;">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Device_no')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-device_no" class="form-control" name="row[device_no]" type="number" value="{$row.device_no|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Name')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-name" class="form-control" name="row[name]" type="text" value="{$row.name|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Model_number')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-model_number" class="form-control" name="row[model_number]" type="text" value="{$row.model_number|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Zcbh')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-zcbh" class="form-control" name="row[zcbh]" type="text" value="{$row.zcbh|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Company')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-company" class="form-control" name="row[company]" type="text" value="{$row.company|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Jljzdw')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-jljzdw" class="form-control" name="row[jljzdw]" type="text" value="{$row.jljzdw|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Principal')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-principal" class="form-control" name="row[principal]" type="text" value="{$row.principal|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Zsyxq')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-zsyxq" class="form-control datetimepicker" data-date-format="YYYY-MM-DD" data-use-current="true" name="row[zsyxq]" type="text" value="{$row.zsyxq}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Uwb_token')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-uwb_token" class="form-control" name="row[uwb_token]" type="text" value="{$row.uwb_token|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group layer-footer">
+        <label class="control-label col-xs-12 col-sm-2"></label>
+        <div class="col-xs-12 col-sm-8">
+            <button type="submit" class="btn btn-success btn-embossed disabled">{:__('OK')}</button>
+            <button type="reset" class="btn btn-default btn-embossed">{:__('Reset')}</button>
+        </div>
+    </div>
+</form>

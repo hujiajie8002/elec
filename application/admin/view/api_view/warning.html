@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>违规信息</title>
+    <link rel="stylesheet" href="__CDN__/assets/dky1/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <script src="__CDN__/assets/dky1/jquery-2.1.4/jquery.min.js"></script>
+    <script src="__CDN__/assets/dky1/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <style>
+
+        ::-webkit-scrollbar { width: 0 !important }
+        table{
+        background-image: url("__CDN__/assets/dky1/img/grey_bg.png");
+            background-repeat:no-repeat;
+            background-size:100% 100%;
+            background-attachment: fixed;
+            font-size: 16px;
+        }
+
+
+
+
+    </style>
+</head>
+<body>
+<div>
+
+    <table class="table  table-radius" style="text-align: center;" border="0">
+
+
+        <thead>
+       <!-- <tr>
+            <th colspan="2" style="text-align: center"></th>
+        </tr>-->
+        <tr>
+            <th style="text-align: center">时间</th>
+            <th style="text-align: center">告警内容</th>
+            <th style="text-align: center">位置</th>
+        </tr>
+        </thead>
+        <tbody id="content">
+        {foreach $res as $key=>$val }
+        <tr pic_url="{$val.pic_url}" coord="{$val.coord}" time="{$val.time}" content="{$val.content}" location="{$val.location}">
+            <td>{$val.time}</td>
+            <td>{$val.content}</td>
+            <td>{$val.location}</td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+</div>
+<script>
+    let bindTr = function (){
+        $('tr').off('click').on('click',function (){
+            //图片地址
+            let pic_url =  $(this).attr('pic_url');
+            //图片红框两角的经纬度，以-分割
+            let coord =  $(this).attr('coord');
+            //时间
+            let time =  $(this).attr('time');
+            //告警类别
+            let content =  $(this).attr('content');
+            //位置
+            let location =  $(this).attr('location');
+            let url = 'showWarningPic?url=' + pic_url + '&coord=' + coord;
+
+            //就是把这几个拼到一个class里面  ，再把这个对象转为json，再把这个json字符串放到里面
+            //
+            let ele = {pic_url:pic_url,coord:coord,time:time,content:content,location:location};
+
+
+
+            /*-------------------------------------------------------------------------------开始*/
+            //三维与web交互
+            // The window.vuplex object gets created when the page starts loading,
+            // so we double-check that it exists before using it here.
+            // You can skip this step if you're sending a message after the page has loaded.
+            if (window.vuplex) {
+                // The window.vuplex object already exists, so go ahead and send the message.
+                let resutlEle={'funcode':'1001',Body:ele}
+
+                sendMessageToCSharp(JSON.stringify(resutlEle));
+
+                addMessageListener();
+            } else {
+                // The window.vuplex object hasn't been initialized yet because the page is still
+                // loading, so add an event listener to send the message once it's initialized.
+                window.addEventListener('vuplexready', sendMessageToCSharp);
+                window.addEventListener('vuplexready', addMessageListener);
+            }
+            //发给三维
+            function sendMessageToCSharp(msg) {
+                // This object passed to postMessage() automatically gets serialized as JSON
+                // and is emitted via the C# MessageEmitted event. This API mimics the window.postMessage API.
+                //这的我们用code定义函数类别，body放要用的数据
+                // 比如我们定义 1001 为摄像机所有数据 ，body为整个的json数据
+                //sendMessageToCSharp('1001',"拼起来的的json数据");//这句话就是发给三维
+                window.vuplex.postMessage(msg);
+            }
+            //网页接收三维数据
+            function addMessageListener() {
+                window.vuplex.addEventListener('message', function(event) {
+                    let json = event.data;
+                    // > JSON received: { "type": "greeting", "message": "Hello from C#!" }
+                    //
+                    //json 这个json就是从三维发过来的，当三维发送数据给网页时，会回调这个。
+                    //json
+
+                    console.log('JSON received: ' + json);
+                });
+            }
+            /*-------------------------------------------------------------------------------结束*/
+
+
+
+
+
+            console.log(ele)
+            //新窗口打开图片
+            // window.open(url);
+        });
+    }
+
+    $(document).ready(function (){
+        bindTr();
+        let url = '{$url}';
+        let digui = function (){
+            $.ajax({
+                type:'post',
+                url:url,
+                async:true,
+                dataType:'json',
+                success:function (data_json){
+                    let data = JSON.parse(data_json);
+                    let html = '';
+                    for(let i in data)
+                    {
+                        let pic_url = data[i]['pic_url'];
+                        let coord = data[i]['coord'];
+                        let time = data[i]['time'];
+                        let content = data[i]['content'];
+                        let location = data[i]['location'];
+                        html+='<tr pic_url="'+pic_url+  '" coord="' + coord +'" time="'+time +'" content="'+content +'" location="'+data[i]["location"] +'">';
+                        html+='<td>'+data[i]['time']+'</td>';
+                        html+='<td>'+data[i]['content']+'</td>';
+                        html+='<td>'+data[i]['location']+'</td>';
+                        html+='</tr>';
+                    }
+                    $('#content').html(html);
+                    bindTr();
+                },
+                error:function (){
+                    alert('网络繁忙，请稍后重试');
+                }
+            });
+        }
+        setInterval(digui,10000);
+    });
+</script>
+</body>
+</html>

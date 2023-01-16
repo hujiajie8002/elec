@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+<head>
+    <meta charset="utf-8">
+</head>
+<body style="height: 100%; margin: 0">
+</body>
+
+<canvas id="canvas" width="520" height="300">
+    <script src="__CDN__/assets/dky1/jquery-2.1.4/jquery.min.js"></script>
+    <script>
+        //可被三维调用
+        function U_GetMsg()
+        {
+            return 'laiziweb';
+        }
+        //這個本地地址是什麽
+        //三维与web交互
+        // The window.vuplex object gets created when the page starts loading,
+        // so we double-check that it exists before using it here.
+        // You can skip this step if you're sending a message after the page has loaded.
+        if (window.vuplex) {
+            // The window.vuplex object already exists, so go ahead and send the message.
+            //sendMessageToCSharp('1001','body1');
+            addMessageListener();
+
+        } else {
+            // The window.vuplex object hasn't been initialized yet because the page is still
+            // loading, so add an event listener to send the message once it's initialized.
+            window.addEventListener('vuplexready', sendMessageToCSharp);
+            window.addEventListener('vuplexready', addMessageListener);
+        }
+
+        //发给三维
+        function sendMessageToCSharp(msg1,msg2) {
+            // This object passed to postMessage() automatically gets serialized as JSON
+            // and is emitted via the C# MessageEmitted event. This API mimics the window.postMessage API.
+            window.vuplex.postMessage({ funcode: msg1, Body: msg2 });
+        }
+
+        //接收三维
+        function addMessageListener() {
+            window.vuplex.addEventListener('message', function(event) {
+                let json = event.data;
+                // > JSON received: { "type": "greeting", "message": "Hello from C#!" }
+                //把接收的再发回去测试
+                //json是先從三維傳過來的。
+
+                sendMessageToCSharp('來自web',json);
+                json = JSON.parse(json);
+                drawRectangle(json['Body']['pic_url'],json['Body']['coord']);
+                // console.log('JSON received: ' + json);
+            });
+        }
+    </script>
+    <script>
+        //drawRectangle();
+        function drawRectangle(src="__CDN__/assets/dky1/img/微信图片_20210423155326.jpg",coord= '1365,610,1590,999-1522,609,1589,687'){
+            //繪製紅框
+            const img = new Image();
+            const canvas = document.querySelector("#canvas");
+            let ctx;
+            ctx = canvas.getContext("2d");
+            // 当图片加载完再动手
+            img.onload = function () {
+                // 画布大小和图片尺寸不一样算好比例
+                const cWidth = canvas.width, cHeight = canvas.height;
+                const imgWidth = img.naturalWidth, imgHeight = img.naturalHeight;
+                const zoom = {
+                    width: cWidth / imgWidth,
+                    height: cHeight / imgHeight,
+                };
+                // 以图画底
+                ctx.drawImage(img, 0,0, cWidth, cHeight);
+                // 假设左上角的point 29,24 这是针对原图的坐标系
+                // 假设右下角的point 124,52 这是针对原图的坐标系1522,609,1589,687
+                let coord1 = coord.split('-');
+                for (let i in coord1)
+                {
+                    let temp = coord1[i].split(',');
+                    const startPoint = [temp[0],temp[1]], endPoint = [temp[2],temp[3]];
+                    // https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/strokeRect
+                    ctx.strokeStyle = "red";
+                    ctx.strokeRect(
+                        startPoint[0] * zoom.width,
+                        startPoint[1] * zoom.height,
+                        (endPoint[0] - startPoint[0]) * zoom.width,
+                        (endPoint[1] - startPoint[1]) * zoom.height
+                    );
+                }
+            }
+
+            // 动手
+            img.src = src;
+        }
+
+    </script>
+</html>

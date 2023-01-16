@@ -1,0 +1,152 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{$s_code}__过程数据</title>
+    <link rel="stylesheet" href="__CDN__/assets/dky1/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <style>
+        ::-webkit-scrollbar { width: 0 !important }
+        table{
+            //background-image: url("../../../static/img/blue_bg.png");
+            background-repeat:no-repeat;
+            background-size:100% 100%;
+            background-attachment: fixed;
+        }
+    </style>
+</head>
+<body>
+<div class="row">
+    <div style="position: fixed;width: 38%;margin-left: 10px">
+        <h2 style="text-align: center">{$s_code}__结果数据</h2>
+        <div id="treeview" class=""></div>
+    </div>
+    <div style="position: absolute;width: 60%;right: 0">
+        <table class="table" style="text-align: center;" border="0">
+            <thead>
+            <tr>
+                <th style="text-align: center">参数名称</th>
+                <th style="text-align: center">结果</th>
+                <th style="text-align: center">单位</th>
+            </tr>
+            </thead>
+            <tbody id="content">
+
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+<script src="__CDN__/assets/dky1/jquery-2.1.4/jquery.min.js"></script>
+<script src="__CDN__/assets/dky1/bootstrap-treeview.js"></script>
+<script src="__CDN__/assets/dky1/layui-v2.6.4/layui/layui.js"></script>
+<script>
+
+    $(function() {
+        var data = null;
+        let s_code = '{$s_code}';
+        let url = '{$url}';
+        let getReport = function (){
+            let ret = null;
+            $.ajax({
+                type:'post',
+                url:url,
+                async:false,
+                dataType:'json',
+                data:{'s_code':s_code},
+                success:function (data_json){
+                    let res = JSON.parse(data_json);
+                    data = res['data'];
+                    console.log(data);
+                    if (!Object.keys(data).length){
+                        layer.msg('暂无此试验结果数据，请稍后重试',{icon:5,time:1500});
+                    }
+                    let tree_data = [];
+                    for (let i in data)
+                    {
+                        let one_node = {};
+                        one_node.text = i;
+                        one_node.href = '#';
+                        one_node.tags = [data[i].length];
+                        one_node.selectable = false;
+                        let nodes = [];
+                        for(let j in data[i])
+                        {
+                            let a = {};
+                            a.text = parseInt(j)+1;
+                            a.href = '#';
+                            a.tags =  ['0'];
+                            nodes.push(a);
+                        }
+                        one_node.nodes = nodes;
+                        tree_data.push(one_node);
+                    }
+                    ret = tree_data;
+                },
+                error:function (){
+                    alert('网络繁忙，请稍后重试');
+                }
+            });
+            return ret;
+        }
+        //getReport();
+        //console.log(data);
+        $('#treeview').treeview({
+            expandIcon: "glyphicon glyphicon-stop",
+            collapseIcon: "glyphicon glyphicon-unchecked",
+            nodeIcon: "glyphicon",
+            color: "black",
+            backColor: "white",
+            onhoverColor: "e0ffff",
+            borderColor: "red",
+            showBorder: false,
+            showTags: false,
+            highlightSelected: true,
+            selectedColor: "black",
+            selectedBackColor: "#33ccff",
+            data: getReport(),
+            levels:1,
+            onNodeCollapsed: function(event, node) {
+                $('#treeview').treeview('getNode', node.nodeId);
+                console.log(node);
+            },
+            onNodeExpanded: function (event, node) {
+                $('#treeview').treeview('collapseAll', { silent: false });
+                $('#treeview').treeview('expandNode', [ node.nodeId, { levels: 2, silent: true } ]);
+                console.log(node);
+            },
+            onNodeSelected: function(event, node) {
+                //獲取父節點id，進而獲取父節點的text
+                let parent_id = $('#treeview').treeview('getParent',node.nodeId);
+                let parent_text = parent_id.text;
+                console.log(parent_text);
+                console.log(node.text);
+                console.log(data[parent_text][parseInt(node.text)-1]);
+                //搜索data中相關試驗的數據
+                let html = '';
+                for(let i in data[parent_text][parseInt(node.text)-1])
+                {
+                    html+='<tr>';
+                    html+='<td>'+i+'</td>';
+                    //分割795.98--V
+                    let val_unit = data[parent_text][parseInt(node.text)-1][i].split('--');
+                    html+='<td>'+val_unit[0]+'</td>';
+                    html+='<td>'+val_unit[1]+'</td>';
+                    html+='</tr>';
+                }
+                $('#content').html(html);
+            },
+            onNodeUnselected: function (event, node) {
+                console.log(node);
+            }
+
+        });
+
+        //计算所有一级节点数量
+      /*  let first_level_node_num = Object.keys(data).length;
+        alert(first_level_node_num);*/
+        $('#treeview').treeview('selectNode', [ 1, { silent: false } ]);
+    });
+
+</script>
+</html>

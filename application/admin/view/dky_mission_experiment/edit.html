@@ -1,0 +1,40 @@
+<form id="edit-form" class="form-horizontal" role="form" data-toggle="validator" method="POST" action="">
+    {:token()}
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Mission')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-mission" class="form-control" name="row[mission]" type="number" value="{$row.mission|htmlentities}" disabled>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('twins_token')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-twins_token" class="form-control" name="row[twins_token]" type="text" value="{$row.twins_token|htmlentities}" disabled>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Sample_index')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-sample_index" class="form-control" name="row[sample_index]" type="text" value="{$row.sample_index|htmlentities}" disabled>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Experiment')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-experiment" class="form-control" name="row[experiment]" type="text" value="{$row.experiment|htmlentities}" disabled>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Dky_staff_ids')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-dky_staff_ids" data-rule="required" data-source="dky_staff/index" data-multiple="true" class="form-control selectpage" name="row[dky_staff_ids]" type="text" value="{$row.dky_staff_ids|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group layer-footer">
+        <label class="control-label col-xs-12 col-sm-2"></label>
+        <div class="col-xs-12 col-sm-8">
+            <button type="submit" class="btn btn-success btn-embossed disabled">{:__('OK')}</button>
+            <button type="reset" class="btn btn-default btn-embossed">{:__('Reset')}</button>
+        </div>
+    </div>
+</form>

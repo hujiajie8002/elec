@@ -1,0 +1,88 @@
+<form id="add-form" class="form-horizontal" role="form" data-toggle="validator" method="POST" action="">
+    {:token()}
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('District_id')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-district_id" data-rule="required" data-source="district/index" class="form-control selectpage" name="row[district_id]" type="text" value="">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Station')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-station" class="form-control" name="row[station]" type="text">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Type')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-type" class="form-control" name="row[type]" type="text">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Experiment_name')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-experiment_name" class="form-control" name="row[experiment_name]" type="text">
+        </div>
+    </div>
+    <div class="form-group" style="display:none;">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Sample_code')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-sample_code" class="form-control" name="row[sample_code]" type="text">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Twins_token')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-twins_token" class="form-control" name="row[twins_token]" type="text">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Description')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <textarea id="c-description" class="form-control " rows="5" name="row[description]" cols="50"></textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Status')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            
+            <div class="radio">
+            {foreach name="statusList" item="vo"}
+            <label for="row[status]-{$key}"><input id="row[status]-{$key}" name="row[status]" type="radio" value="{$key}" {in name="key" value="0"}checked{/in} /> {$vo}</label> 
+            {/foreach}
+            </div>
+
+        </div>
+    </div>
+    <div class="form-group" >
+        <label class="control-label col-xs-12 col-sm-2">{:__('Problem_type')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-problem_type" class="form-control" name="row[problem_type]" type="text" value="作业不规范" disabled>
+        </div>
+    </div>
+    <div class="form-group" style="display:none;">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Is_read')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-is_read" class="form-control" name="row[is_read]" type="number" value="0">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Change_explanation')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <textarea id="c-change_explanation" class="form-control " rows="5" name="row[change_explanation]" cols="50"></textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Occur_at')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-occur_at" data-rule="required" class="form-control datetimepicker" data-date-format="YYYY-MM-DD HH:mm:ss" data-use-current="true" name="row[occur_at]" type="text" value="{:date('Y-m-d H:i:s')}">
+        </div>
+    </div>
+    <div class="form-group layer-footer">
+        <label class="control-label col-xs-12 col-sm-2"></label>
+        <div class="col-xs-12 col-sm-8">
+            <button type="submit" class="btn btn-success btn-embossed disabled">{:__('OK')}</button>
+            <button type="reset" class="btn btn-default btn-embossed">{:__('Reset')}</button>
+        </div>
+    </div>
+</form>

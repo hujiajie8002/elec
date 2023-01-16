@@ -1,0 +1,130 @@
+<form id="edit-form" class="form-horizontal" role="form" data-toggle="validator" method="POST" action="">
+    {:token()}
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Sample_code')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-sample_code" data-rule="required" class="form-control" name="row[sample_code]" type="text" value="{$row.sample_code|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Sample_index')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-sample_index" data-rule="required" class="form-control" name="row[sample_index]" type="text" value="{$row.sample_index|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Twins_token')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-twins_token" class="form-control" name="row[twins_token]" type="text" value="{$row.twins_token|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Status')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-status" data-rule="required" class="form-control" name="row[status]" type="text" value="{$row.status|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Uwb_token')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-uwb_token" data-rule="required" class="form-control" name="row[uwb_token]" type="text" value="{$row.uwb_token|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Device_type_belong')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-device_type_belong" class="form-control" name="row[device_type_belong]" type="text" value="{$row.device_type_belong|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Device_type')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-device_type" data-rule="required" class="form-control" name="row[device_type]" type="text" value="{$row.device_type|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Description')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <textarea id="c-description" class="form-control " rows="5" name="row[description]" cols="50">{$row.description|htmlentities}</textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Distribute_time')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-distribute_time" data-rule="required" class="form-control datetimepicker" data-date-format="YYYY-MM-DD HH:mm:ss" data-use-current="true" name="row[distribute_time]" type="text" value="{$row.distribute_time}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Finish_time')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-finish_time" data-rule="required" class="form-control datetimepicker" data-date-format="YYYY-MM-DD HH:mm:ss" data-use-current="true" name="row[finish_time]" type="text" value="{$row.finish_time}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Experiment_type')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-experiment_type" data-rule="required" class="form-control" name="row[experiment_type]" type="text" value="{$row.experiment_type|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Experiments')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <textarea id="c-experiments" class="form-control " rows="5" name="row[experiments]" cols="50">{$row.experiments|htmlentities}</textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Experiments_station')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <textarea id="c-experiments_station" class="form-control " rows="5" name="row[experiments_station]" cols="50">{$row.experiments_station|htmlentities}</textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Testing_institution')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-testing_institution" data-rule="required" class="form-control" name="row[testing_institution]" type="text" value="{$row.testing_institution|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Testing_duration')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-testing_duration" data-rule="required" class="form-control" step="0.1" name="row[testing_duration]" type="number" value="{$row.testing_duration|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Overtime_norm')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-overtime_norm" class="form-control" name="row[overtime_norm]" type="number" value="{$row.overtime_norm|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Overtime_duration')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-overtime_duration" data-rule="required" class="form-control" step="0.1" name="row[overtime_duration]" type="number" value="{$row.overtime_duration|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Conclusion')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-conclusion" class="form-control" name="row[conclusion]" type="number" value="{$row.conclusion|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Create_at')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-create_at" class="form-control datetimepicker" data-date-format="YYYY-MM-DD HH:mm:ss" data-use-current="true" name="row[create_at]" type="text" value="{$row.create_at}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Update_at')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-update_at" class="form-control datetimepicker" data-date-format="YYYY-MM-DD HH:mm:ss" data-use-current="true" name="row[update_at]" type="text" value="{:$row.update_at?datetime($row.update_at):''}">
+        </div>
+    </div>
+    <div class="form-group layer-footer">
+        <label class="control-label col-xs-12 col-sm-2"></label>
+        <div class="col-xs-12 col-sm-8">
+            <button type="submit" class="btn btn-success btn-embossed disabled">{:__('OK')}</button>
+            <button type="reset" class="btn btn-default btn-embossed">{:__('Reset')}</button>
+        </div>
+    </div>
+</form>
