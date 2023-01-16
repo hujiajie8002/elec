@@ -10,7 +10,6 @@ use think\Session;
 
 /**
  * 检测设备信息
- *
  * @icon fa fa-circle-o
  */
 class DkyDevice extends Backend
