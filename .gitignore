@@ -1,8 +1,5 @@
 /nbproject/
-/thinkphp/
-/vendor/
 /runtime/*
-/addons/*
 /application/admin/command/Install/*.lock
 /public/assets/libs/
 /public/assets/addons/*
@@ -12,7 +9,6 @@ composer.lock
 *.log
 *.css.map
 !.gitkeep
-.env
 .svn
 .vscode
 node_modules
