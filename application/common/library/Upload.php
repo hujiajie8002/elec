@@ -244,7 +244,7 @@ class Upload
         $auth = Auth::instance();
         $params = array(
             'admin_id'    => (int)session('admin.id'),
-            'user_id'     => (int)$auth->id,
+            'user_id'     => (int)$auth->id ?? 0,
             'filename'    => mb_substr(htmlspecialchars(strip_tags($this->fileInfo['name'])), 0, 100),
             'category'    => $category,
             'filesize'    => $this->fileInfo['size'],
@@ -260,7 +260,7 @@ class Upload
             'extparam'    => '',
         );
         $attachment = new Attachment();
-        $attachment->data(array_filter($params));
+        $attachment->data(($params));
         $attachment->save();
 
         \think\Hook::listen("upload_after", $attachment);

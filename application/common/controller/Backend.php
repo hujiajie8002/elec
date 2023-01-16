@@ -261,6 +261,7 @@ class Backend extends Controller
         $relationSearch = is_null($relationSearch) ? $this->relationSearch : $relationSearch;
         $search = $this->request->get("search", '','addslashes,htmlspecialchars');
         $filter = $this->request->get("filter", '');
+        //var_dump($filter);
         $op = $this->request->get("op", '', 'trim');
         $sort = $this->request->get("sort", !empty($this->model) && $this->model->getPk() ? $this->model->getPk() : 'id','addslashes,htmlspecialchars');
         $order = $this->request->get("order", "DESC");
@@ -307,7 +308,11 @@ class Backend extends Controller
         foreach ($filter as $k => $v) {
             $filter[$k] = addslashes($v);
             $filter[$k] = htmlspecialchars($filter[$k]);
+            if ($filter[$k] == '%' || $filter[$k] == '_'){
+                $filter[$k] = "\\".$filter[$k] ;
+            }
         }
+
         foreach ($filter as $k => $v) {
             if (!preg_match('/^[a-zA-Z0-9_\-\.]+$/', $k)) {
                 continue;
