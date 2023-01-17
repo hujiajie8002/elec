@@ -156,16 +156,103 @@ trait Backend
      */
     public function recyclebin()
     {
+
+        $admin = Session::get('admin');
+        $username = $admin['username'];
+        $baseUrl = request()->baseUrl();
+        $baseUrl = substr($baseUrl,9);
+
+        $reflect = [
+            'snfzx'=>2,
+            'sbfzx'=>4,
+            'szfzx'=>3,
+        ];
+        $reflect2 = [
+            'snfzx'=>'苏南分中心',
+            'sbfzx'=>'苏北分中心',
+            'szfzx'=>'苏中分中心',
+        ];
+        //所有需要区分机构名称的方法
+        $arr = array(
+            'dky_device',
+            'dky_station',
+            'dky_agv',
+            'dky_storage_rack',
+            'maintenance_log',
+            'dky_testing_problem',
+            'dky_device/recyclebin',
+            'dky_station/recyclebin',
+            'dky_agv/index',
+            'dky_storage_rack/recyclebin',
+            'maintenance_log/recyclebin',
+            'dky_testing_problem/recyclebin',
+            'dky_staff',
+            'dky_staff/recyclebin'
+
+        );
+
+        $arr2 = array(
+            'laboratory_info/recyclebin',
+            'laboratory_info',
+            'district/recyclebin',
+            'district',
+        );
+
+        $arr3 = array(
+            'dky_mission',
+            'dky_mission/recyclebin'
+        );
+
+        $arr4 = array(
+            'rank',
+            'rank/recyclebin',
+            'rank_breakdown',
+            'rank_breakdown/recyclebin'
+        );
+
+
         //设置过滤方法
         $this->request->filter(['trim','strip_tags','xss_clean']);
         if ($this->request->isAjax()) {
             list($where, $sort, $order, $offset, $limit) = $this->buildparams();
 
-            $list = $this->model
-                ->onlyTrashed()
-                ->where($where)
-                ->order($sort, $order)
-                ->paginate($limit);
+            if (($username == 'snfzx' || $username == 'szfzx' || $username == 'sbfzx') && in_array($baseUrl,$arr))
+            {
+                $list = $this->model
+                    ->onlyTrashed()
+                    ->where($where)
+                    ->where('district_id',$reflect[$username])
+                    ->order($sort, $order)
+                    ->paginate($limit);
+            }elseif (($username == 'snfzx' || $username == 'szfzx' || $username == 'sbfzx') && in_array($baseUrl,$arr2)){
+                $list = $this->model
+                    ->onlyTrashed()
+                    ->where($where)
+                    ->where('name',$reflect2[$username])
+                    ->order($sort, $order)
+                    ->paginate($limit);
+            }elseif (($username == 'snfzx' || $username == 'szfzx' || $username == 'sbfzx') && in_array($baseUrl,$arr3)){
+                $list = $this->model
+                    ->onlyTrashed()
+                    ->where($where)
+                    ->where('testing_institution',$reflect2[$username])
+                    ->order($sort, $order)
+                    ->paginate($limit);
+            }elseif (($username == 'snfzx' || $username == 'szfzx' || $username == 'sbfzx') && in_array($baseUrl,$arr4)){
+                $list = $this->model
+                    ->onlyTrashed()
+                    ->where($where)
+                    ->where('institution',$reflect2[$username])
+                    ->order($sort, $order)
+                    ->paginate($limit);
+            }else{
+                $list = $this->model
+                    ->onlyTrashed()
+                    ->where($where)
+                    ->order($sort, $order)
+                    ->paginate($limit);
+            }
+
 
             $result = array("total" => $list->total(), "rows" => $list->items());
 
