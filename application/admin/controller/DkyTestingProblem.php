@@ -6,6 +6,7 @@ use app\common\controller\Backend;
 use think\Db;
 use think\exception\PDOException;
 use think\exception\ValidateException;
+use think\Session;
 
 /**
  * 
@@ -83,7 +84,7 @@ class DkyTestingProblem extends Backend
                     $this->error($e->getMessage());
                 } catch (Exception $e) {
                     Db::rollback();
-                    $this->error($e->getMessage());
+                    $this->error(Session::get('fzyq_error_info')??$e->getMessage());
                 }
                 if ($result !== false) {
                     $this->success();

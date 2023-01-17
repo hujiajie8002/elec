@@ -20,6 +20,8 @@ trait Backend
     protected $need_truncate_tables = array(
       'experiment'
     );
+
+    public $error_info = '';
     /**
      * 排除前台提交过来的字段
      * @param $params
@@ -206,7 +208,7 @@ trait Backend
                     $this->error($e->getMessage());
                 } catch (Exception $e) {
                     Db::rollback();
-                    $this->error($e->getMessage());
+                    $this->error(Session::get('fzyq_error_info')??$e->getMessage());
                 }
                 if ($result !== false) {
                     $this->success();
@@ -261,7 +263,7 @@ trait Backend
                     $this->error($e->getMessage());
                 } catch (Exception $e) {
                     Db::rollback();
-                    $this->error($e->getMessage());
+                    $this->error(Session::get('fzyq_error_info')??$e->getMessage());
                 }
                 if ($result !== false) {
                     $this->success();
@@ -306,7 +308,7 @@ trait Backend
                 $this->error($e->getMessage());
             } catch (Exception $e) {
                 Db::rollback();
-                $this->error($e->getMessage());
+                $this->error(Session::get('fzyq_error_info')??$e->getMessage());
             }
             if ($count) {
                 $this->success();
@@ -348,7 +350,7 @@ trait Backend
             $this->error($e->getMessage());
         } catch (Exception $e) {
             Db::rollback();
-            $this->error($e->getMessage());
+            $this->error(Session::get('fzyq_error_info')??$e->getMessage());
         }
         if ($count) {
             $this->success();
@@ -389,7 +391,7 @@ trait Backend
             $this->error($e->getMessage());
         } catch (Exception $e) {
             Db::rollback();
-            $this->error($e->getMessage());
+            $this->error(Session::get('fzyq_error_info')??$e->getMessage());
         }
         if ($count) {
             $this->success();
@@ -981,7 +983,10 @@ trait Backend
         //省中心普通用户无操作权限
         if ($username == 'szx_general'){
             Db::rollback();
-            $this->error('非法操作');
+            $error_info = '您无权操作此数据，请注意各分中心只能维护分中心自己的数据~';
+            $this->error_info = $error_info;
+            Session::set('fzyq_error_info',$error_info);
+            $this->error($error_info);
         }
         if ($this->search_assistant($baseUrl,$arr)){
             //分中心用户仅有本中心记录增删改查权限
@@ -989,8 +994,10 @@ trait Backend
             {
                 if ($params['district_id'] != $reflect[$username]){
                     Db::rollback();
-                    $this->error('非法操作');
-                }
+                    $error_info = '您无权操作此数据，请注意各分中心只能维护分中心自己的数据~';
+                    $this->error_info = $error_info;
+                    Session::set('fzyq_error_info',$error_info);
+                    $this->error($error_info);                }
             }
         }
 
@@ -1000,8 +1007,10 @@ trait Backend
             {
                 if ($params['name'] != $reflect2[$username]){
                     Db::rollback();
-                    $this->error('非法操作');
-                }
+                    $error_info = '您无权操作此数据，请注意各分中心只能维护分中心自己的数据~';
+                    $this->error_info = $error_info;
+                    Session::set('fzyq_error_info',$error_info);
+                    $this->error($error_info);                  }
             }
         }
 
@@ -1011,8 +1020,10 @@ trait Backend
             {
                 if ($params['institution'] != $reflect2[$username]){
                     Db::rollback();
-                    $this->error('非法操作');
-                }
+                    $error_info = '您无权操作此数据，请注意各分中心只能维护分中心自己的数据~';
+                    $this->error_info = $error_info;
+                    Session::set('fzyq_error_info',$error_info);
+                    $this->error($error_info);                  }
             }
         }
 
