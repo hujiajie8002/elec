@@ -3,7 +3,7 @@
     <div class="form-group">
         <label class="control-label col-xs-12 col-sm-2">{:__('Name')}:</label>
         <div class="col-xs-12 col-sm-8">
-            <input id="c-name" class="form-control" name="row[name]" type="text" value="{$row.name|htmlentities}">
+            <input id="c-name" class="form-control" name="row[name]" type="text" value="{$row.name|htmlentities}" oninput="if(value.length > 50) value=value.slice(0, 50)">
         </div>
     </div>
     <div class="form-group">
@@ -15,37 +15,37 @@
     <div class="form-group">
         <label class="control-label col-xs-12 col-sm-2">{:__('Device_a')}:</label>
         <div class="col-xs-12 col-sm-8">
-            <input id="c-device_a" class="form-control" name="row[device_a]" type="number" value="{$row.device_a|htmlentities}">
+            <input id="c-device_a" class="form-control" name="row[device_a]" type="number" value="{$row.device_a|htmlentities}" oninput="if(value.length > 10) value=value.slice(0, 10)">
         </div>
     </div>
     <div class="form-group">
         <label class="control-label col-xs-12 col-sm-2">{:__('Device_b')}:</label>
         <div class="col-xs-12 col-sm-8">
-            <input id="c-device_b" class="form-control" name="row[device_b]" type="number" value="{$row.device_b|htmlentities}">
+            <input id="c-device_b" class="form-control" name="row[device_b]" type="number" value="{$row.device_b|htmlentities}" oninput="if(value.length > 10) value=value.slice(0, 10)">
         </div>
     </div>
     <div class="form-group">
         <label class="control-label col-xs-12 col-sm-2">{:__('Device_c')}:</label>
         <div class="col-xs-12 col-sm-8">
-            <input id="c-device_c" class="form-control" name="row[device_c]" type="number" value="{$row.device_c|htmlentities}">
+            <input id="c-device_c" class="form-control" name="row[device_c]" type="number" value="{$row.device_c|htmlentities}" oninput="if(value.length > 10) value=value.slice(0, 10)">
         </div>
     </div>
     <div class="form-group">
         <label class="control-label col-xs-12 col-sm-2">{:__('Material_a')}:</label>
         <div class="col-xs-12 col-sm-8">
-            <input id="c-material_a" class="form-control" name="row[material_a]" type="number" value="{$row.material_a|htmlentities}">
+            <input id="c-material_a" class="form-control" name="row[material_a]" type="number" value="{$row.material_a|htmlentities}" oninput="if(value.length > 10) value=value.slice(0, 10)">
         </div>
     </div>
     <div class="form-group">
         <label class="control-label col-xs-12 col-sm-2">{:__('Material_b')}:</label>
         <div class="col-xs-12 col-sm-8">
-            <input id="c-material_b" class="form-control" name="row[material_b]" type="number" value="{$row.material_b|htmlentities}">
+            <input id="c-material_b" class="form-control" name="row[material_b]" type="number" value="{$row.material_b|htmlentities}" oninput="if(value.length > 10) value=value.slice(0, 10)">
         </div>
     </div>
     <div class="form-group">
         <label class="control-label col-xs-12 col-sm-2">{:__('Material_c')}:</label>
         <div class="col-xs-12 col-sm-8">
-            <input id="c-material_c" class="form-control" name="row[material_c]" type="number" value="{$row.material_c|htmlentities}">
+            <input id="c-material_c" class="form-control" name="row[material_c]" type="number" value="{$row.material_c|htmlentities}" oninput="if(value.length > 10) value=value.slice(0, 10)">
         </div>
     </div>
     <div class="form-group">
@@ -65,7 +65,7 @@
     <div class="form-group">
         <label class="control-label col-xs-12 col-sm-2">{:__('Phone')}:</label>
         <div class="col-xs-12 col-sm-8">
-            <input id="c-phone" class="form-control" name="row[phone]" type="text" value="{$row.phone|htmlentities}">
+            <input id="c-phone" class="form-control" name="row[phone]" type="text" value="{$row.phone|htmlentities}" oninput="if(value.length > 11) value=value.slice(0, 11)">
         </div>
     </div>
     <div class="form-group">
