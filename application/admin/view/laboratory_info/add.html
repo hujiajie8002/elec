@@ -74,6 +74,73 @@
             <textarea id="c-description" class="form-control " rows="5" name="row[description]" cols="50"></textarea>
         </div>
     </div>
+    <!--接样状态-->
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">接样状态:</label>
+        <div class="col-xs-12 col-sm-8">
+
+            <div class="radio">
+                {foreach name="statusList" item="vo"}
+                <label for="row[jyzt]-{$key}"><input id="row[jyzt]-{$key}" name="row[jyzt]" type="radio" value="{$key}" {in name="key" value="1"}checked{/in} /> {$vo}</label>
+                {/foreach}
+            </div>
+
+        </div>
+    </div>
+    <!--接样异常描述-->
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">接样异常描述:</label>
+        <div class="col-xs-12 col-sm-8">
+            <textarea id="c-jyycms" class="form-control " rows="3" name="row[jyycms]" cols="50"></textarea>
+        </div>
+    </div>
+    <!--检测状态-->
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">检测状态:</label>
+        <div class="col-xs-12 col-sm-8">
+
+            <div class="radio">
+                {foreach name="statusList" item="vo"}
+                <label for="row[jczt]-{$key}"><input id="row[jczt]-{$key}" name="row[jczt]" type="radio" value="{$key}" {in name="key" value="1"}checked{/in} /> {$vo}</label>
+                {/foreach}
+            </div>
+
+        </div>
+    </div>
+    <!--检测异常描述-->
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">检测异常描述:</label>
+        <div class="col-xs-12 col-sm-8">
+            <textarea id="c-jcycms" class="form-control " rows="3" name="row[jcycms]" cols="50"></textarea>
+        </div>
+    </div>
+    <!--返样状态-->
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">返样状态:</label>
+        <div class="col-xs-12 col-sm-8">
+
+            <div class="radio">
+                {foreach name="statusList" item="vo"}
+                <label for="row[fyzt]-{$key}"><input id="row[fyzt]-{$key}" name="row[fyzt]" type="radio" value="{$key}" {in name="key" value="1"}checked{/in} /> {$vo}</label>
+                {/foreach}
+            </div>
+
+        </div>
+    </div>
+    <!--返样异常描述-->
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">返样异常描述:</label>
+        <div class="col-xs-12 col-sm-8">
+            <textarea id="c-fyycms" class="form-control " rows="3" name="row[fyycms]" cols="50"></textarea>
+        </div>
+    </div>
+    <!--可接样城市-->
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">可接样城市:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-kjycs11" data-rule="required" data-source='[{"id":"南京","name":"南京"},{"id":"无锡","name":"无锡"},{"id":"徐州","name":"徐州"},{"id":"常州","name":"常州"},{"id":"苏州","name":"苏州"},{"id":"南通","name":"南通"},{"id":"连云港","name":"连云港"},{"id":"淮安","name":"淮安"},{"id":"盐城","name":"盐城"},{"id":"扬州","name":"扬州"},{"id":"镇江","name":"镇江"},{"id":"泰州","name":"泰州"},{"id":"宿迁","name":"宿迁"}]' data-multiple="true" class="form-control selectpage" name="row[kjycs]" type="text" value="">
+        </div>
+    </div>
     <div class="form-group layer-footer">
         <label class="control-label col-xs-12 col-sm-2"></label>
         <div class="col-xs-12 col-sm-8">

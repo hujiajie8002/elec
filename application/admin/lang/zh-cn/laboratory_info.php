@@ -12,5 +12,7 @@ return [
     'Material_c'  => '材料类检测能力C级',
     'Image'       => '照片',
     'Phone'       => '负责人联系方式',
-    'Description' => '描述'
+    'Description' => '描述',
+    'Status 0' => '异常',
+    'Status 1' => '正常'
 ];

@@ -57,6 +57,7 @@ class Experiment extends Backend
         'searchTestingQuantity',
         'getTestingInfo',
         'getRankBreakDown',
+        'sendReportData',
     ];
 
 
@@ -165,13 +166,13 @@ class Experiment extends Backend
 
     public function getLaboratoryInfo()
     {
-         //return 39;
+
         $ret = array(
             'code'=>1,
             'msg'=>'success'
         );
 
-        $res = Db::table('laboratory_info')->select();
+        $res = Db::table('laboratory_info')->where('deletetime',null)->select();
 
         //在检数量
         $this_year = date('Y');
@@ -207,33 +208,42 @@ class Experiment extends Backend
             ->force('idx_6')
             ->select();
 
-        foreach ($res as $k=>$v){
-            $res[$k]['device_count'] = $res[$k]['device_a'] + $res[$k]['device_b'] + $res[$k]['device_c'];
-            $res[$k]['material_count'] = $res[$k]['material_a'] + $res[$k]['material_b'] + $res[$k]['material_c'];
-            $res[$k]['device_zj_count'] = 0;
-            $res[$k]['material_zj_count'] = 0;
-            $res[$k]['yj_count'] = 0;
-            $res[$k]['cq_count'] = 0;
-            foreach ($arr as $kkkkk=>$vvvvv){
-                if (($vvvvv['testing_institution'] == $v['name']) && ($vvvvv['status'] == '在检')){
-                    $res[$k]['device_zj_count'] = $vvvvv['num'];
-                }
-            }
-            foreach ($arr1 as $kk=>$vv){
-                if (($vv['testing_institution'] == $v['name']) && ($vv['status'] == '在检')){
-                    $res[$k]['material_zj_count'] = $vv['num'];
-                }
-            }
-            foreach ($res_yj as $kkk=>$vvv){
-                if ($this->name_reflection_inverse[$vvv['district_id']] == $v['name']){
-                    $res[$k]['yj_count'] = $vvv['number'];
-                }
-            }
 
-            foreach ($res_cq as $kkkk=>$vvvv){
-                if ($vvvv['testing_institution'] == $v['name']){
-                    $res[$k]['cq_count'] = $vvvv['number'];
+
+
+
+
+        foreach ($res as $k=>$v){
+            //只有四个中心要计算的数据
+            if (in_array($res[$k]['name'],$this->name_reflection_inverse)){
+                $res[$k]['device_count'] = $res[$k]['device_a'] + $res[$k]['device_b'] + $res[$k]['device_c'];
+                $res[$k]['material_count'] = $res[$k]['material_a'] + $res[$k]['material_b'] + $res[$k]['material_c'];
+                $res[$k]['device_zj_count'] = 0;
+                $res[$k]['material_zj_count'] = 0;
+                $res[$k]['yj_count'] = 0;
+                $res[$k]['cq_count'] = 0;
+                foreach ($arr as $kkkkk=>$vvvvv){
+                    if (($vvvvv['testing_institution'] == $v['name']) && ($vvvvv['status'] == '在检')){
+                        $res[$k]['device_zj_count'] = $vvvvv['num'];
+                    }
                 }
+                foreach ($arr1 as $kk=>$vv){
+                    if (($vv['testing_institution'] == $v['name']) && ($vv['status'] == '在检')){
+                        $res[$k]['material_zj_count'] = $vv['num'];
+                    }
+                }
+                foreach ($res_yj as $kkk=>$vvv){
+                    if ($this->name_reflection_inverse[$vvv['district_id']] == $v['name']){
+                        $res[$k]['yj_count'] = $vvv['number'];
+                    }
+                }
+
+                foreach ($res_cq as $kkkk=>$vvvv){
+                    if ($vvvv['testing_institution'] == $v['name']){
+                        $res[$k]['cq_count'] = $vvvv['number'];
+                    }
+                }
+
             }
 
         }
@@ -2505,7 +2515,7 @@ class Experiment extends Backend
         $this->checkParameter($json_arr,$jcjg_id,$station,$type,$e_name,$s_code,'1mA电压','施加电压值不符合要求',$e_name.'所传字段缺少参数：1mA电压',['>='=>24],1);
 
         //0.75mA电流
-        $this->checkParameter($json_arr,$jcjg_id,$station,$type,$e_name,$s_code,'0.75mA电流','施加电压值不符合要求',$e_name.'所传字段缺少参数：0.75mA电流',['<'=>50],1);
+        $this->checkParameter($json_arr,$jcjg_id,$station,$type,$e_name,$s_code,'0.75mA电流','施加泄漏电流的值不符合要求',$e_name.'所传字段缺少参数：0.75mA电流',['<'=>50],1);
 
     }
 
@@ -2728,7 +2738,7 @@ class Experiment extends Backend
             $json_arr = json_decode($json,true);
         }
         //检测温度
-        $this->checkParameter($json_arr,$jcjg_id,$station,$type,$e_name,$s_code,'温度','环境温度测量值不符合要求','配电变压器绕组对地及绕组间直流绝缘电阻测量所传字段缺少参数：温度',['<'=>40,'>'=>5],1);
+        $this->checkParameter($json_arr,$jcjg_id,$station,$type,$e_name,$s_code,'温度','环境温度测量值不符合要求','配电变压器绕组对地及绕组间直流绝缘电阻测量所传字段缺少参数：温度',['<='=>40,'>='=>5],1);
         //检测湿度
         if (isset($json_arr['湿度'])){
             $shidu = $json_arr['湿度'];
@@ -2774,7 +2784,7 @@ class Experiment extends Backend
             $json_arr = json_decode($json,true);
         }
         //检测温度
-        $this->checkParameter($json_arr,$jcjg_id,$station,$type,$e_name,$s_code,'温度','环境温度测量值不符合要求','配电变压器感应耐压试验所传字段缺少参数：温度',['<'=>40,'>'=>5],1);
+        $this->checkParameter($json_arr,$jcjg_id,$station,$type,$e_name,$s_code,'温度','环境温度测量值不符合要求','配电变压器感应耐压试验所传字段缺少参数：温度',['<='=>40,'>='=>5],1);
         //检测湿度
         if (isset($json_arr['湿度'])){
             $shidu = $json_arr['湿度'];
@@ -2852,7 +2862,7 @@ class Experiment extends Backend
             $json_arr = json_decode($json,true);
         }
         //检测温度
-        $this->checkParameter($json_arr,$jcjg_id,$station,$type,$e_name,$s_code,'温度','环境温度测量值不符合要求','配电变压器外施耐压试验所传字段缺少参数：温度',['<'=>40,'>'=>5],1);
+        $this->checkParameter($json_arr,$jcjg_id,$station,$type,$e_name,$s_code,'温度','环境温度测量值不符合要求','配电变压器外施耐压试验所传字段缺少参数：温度',['<='=>40,'>='=>5],1);
         //检测湿度
         if (isset($json_arr['湿度'])){
             $shidu = $json_arr['湿度'];
@@ -2967,7 +2977,7 @@ class Experiment extends Backend
             $json_arr = json_decode($json,true);
         }
         //检测温度
-        $this->checkParameter($json_arr,$jcjg_id,$station,$type,$e_name,$s_code,'温度','环境温度测量值不符合要求','配电变压器短路阻抗和负载损耗测量所传字段缺少参数：温度',['<'=>40,'>'=>5],1);
+        $this->checkParameter($json_arr,$jcjg_id,$station,$type,$e_name,$s_code,'温度','环境温度测量值不符合要求','配电变压器短路阻抗和负载损耗测量所传字段缺少参数：温度',['<='=>40,'>='=>5],1);
         //检测湿度
         if (isset($json_arr['湿度'])){
             $shidu = $json_arr['湿度'];
@@ -2978,7 +2988,7 @@ class Experiment extends Backend
         }
         if ($test_type === '油浸式'){
             //环境温度5到40
-            $this->checkParameter($json_arr,$jcjg_id,$station,$type,$e_name,$s_code,'温度','环境温度测量值不符合要求','配电变压器所传字段缺少参数：温度',['<'=>40,'>'=>5],1);
+            $this->checkParameter($json_arr,$jcjg_id,$station,$type,$e_name,$s_code,'温度','环境温度测量值不符合要求','配电变压器所传字段缺少参数：温度',['<='=>40,'>='=>5],1);
             if (isset($json_arr['直阻温度'])){
                 $val = $json_arr['直阻温度'];
                 //底部液体温度
@@ -3000,7 +3010,7 @@ class Experiment extends Backend
             if (isset($json_arr['绕组温度'])){
                 //环境温度5到40
                 $val = $json_arr['绕组温度'];
-                $this->checkParameter($json_arr,$jcjg_id,$station,$type,$e_name,$s_code,'温度','环境温度测量值不符合要求','配电变压器所传字段缺少参数：温度',['<'=>40,'>'=>5],1);
+                $this->checkParameter($json_arr,$jcjg_id,$station,$type,$e_name,$s_code,'温度','环境温度测量值不符合要求','配电变压器所传字段缺少参数：温度',['<='=>40,'>='=>5],1);
                 //环境温度与绕组温度相差小于2度
                 $this->checkParameter($json_arr,$jcjg_id,$station,$type,$e_name,$s_code,'温度','环境温度测量值不符合要求','配电变压器所传字段缺少参数：温度',['<'=>$val+2,'>'=>$val-2],1);
             }else{
@@ -3071,7 +3081,7 @@ class Experiment extends Backend
             $json_arr = json_decode($json,true);
         }
         //检测温度
-        $this->checkParameter($json_arr,$jcjg_id,$station,$type,$e_name,$s_code,'温度','环境温度测量值不符合要求','配电变压器空载损耗和空载电流测量所传字段缺少参数：温度',['<'=>40,'>'=>5],1);
+        $this->checkParameter($json_arr,$jcjg_id,$station,$type,$e_name,$s_code,'温度','环境温度测量值不符合要求','配电变压器空载损耗和空载电流测量所传字段缺少参数：温度',['<='=>40,'>='=>5],1);
         //检测湿度
         if (isset($json_arr['湿度'])){
             $shidu = $json_arr['湿度'];
@@ -3137,7 +3147,7 @@ class Experiment extends Backend
         }
         if ($test_type === '油浸式'){
             //环境温度5到40
-            $this->checkParameter($json_arr,$jcjg_id,$station,$type,$e_name,$s_code,'温度','环境温度测量值不符合要求','配电变压器所传字段缺少参数：温度',['<'=>40,'>'=>5],1);
+            $this->checkParameter($json_arr,$jcjg_id,$station,$type,$e_name,$s_code,'温度','环境温度测量值不符合要求','配电变压器所传字段缺少参数：温度',['<='=>40,'>='=>5],1);
             if (isset($json_arr['直阻温度'])){
                 $val = $json_arr['直阻温度'];
                 //底部液体温度
@@ -3158,7 +3168,7 @@ class Experiment extends Backend
             if (isset($json_arr['绕组温度'])){
                 //环境温度5到40
                 $val = $json_arr['绕组温度'];
-                $this->checkParameter($json_arr,$jcjg_id,$station,$type,$e_name,$s_code,'温度','环境温度测量值不符合要求','配电变压器所传字段缺少参数：温度',['<'=>40,'>'=>5],1);
+                $this->checkParameter($json_arr,$jcjg_id,$station,$type,$e_name,$s_code,'温度','环境温度测量值不符合要求','配电变压器所传字段缺少参数：温度',['<='=>40,'>='=>5],1);
                 //环境温度与绕组温度相差小于2度
                 $this->checkParameter($json_arr,$jcjg_id,$station,$type,$e_name,$s_code,'温度','环境温度测量值不符合要求','配电变压器所传字段缺少参数：温度',['<'=>$val+2,'>'=>$val-2],1);
             }else{
@@ -3202,7 +3212,7 @@ class Experiment extends Backend
         }
 
         //检测温度
-        $this->checkParameter($json_arr,$jcjg_id,$station,$type,$e_name,$s_code,'温度','环境温度测量值不符合要求','配电变压器温升试验所传字段缺少参数：温度',['<'=>40,'>'=>5],1);
+        $this->checkParameter($json_arr,$jcjg_id,$station,$type,$e_name,$s_code,'温度','环境温度测量值不符合要求','配电变压器温升试验所传字段缺少参数：温度',['<='=>40,'>='=>5],1);
         //检测湿度
         if (isset($json_arr['湿度'])){
             $shidu = $json_arr['湿度'];
@@ -3423,9 +3433,16 @@ class Experiment extends Backend
         $i = 1;
         foreach ($res as $k=>$v){
             $experiments_station = $v['experiments_station'];
-            $experiments_station_arr = explode(',',$experiments_station);
-            //规定试验项目数
-            $res[$k]['gdsy'] = count($experiments_station_arr);
+            if ($experiments_station){
+                $experiments_station_arr = explode(',',$experiments_station);
+                //规定试验项目数
+                $res[$k]['gdsy'] = count($experiments_station_arr);
+            }else{
+                $experiments_station_arr = explode(',',$experiments_station);
+                //规定试验项目数
+                $res[$k]['gdsy'] = 0;
+            }
+
             //已试验项目数量
             $count = Db::table('dky_mission_experiment')
                 ->where('twins_token',$v['twins_token'])
@@ -3497,8 +3514,6 @@ class Experiment extends Backend
     //样品合格率看板
     public function getSamplePanel()
     {
-$a= '{"code":1,"msg":"success","data":{"today_finish":0,"today_dj":31,"today_zj":5,"this_year":544,"all":580}}';
-return $a;
         $ret = [
             'code'=>1,
             'msg'=>'success',
@@ -3670,9 +3685,8 @@ return $a;
         }else{
             return [];
         }
-//dump($station_status_url);
+
         $res = $this->getUrl($station_status_url);
-//	dump($res);
         $array = array(
             'msg'=>$res,
             'type'=>'getStationStatus访问工位接口'
@@ -3706,6 +3720,7 @@ return $a;
                 if ($v['static'] == '在检'){
                     $data['yx']++;
                     if ($v['sampleCode']){
+                        //TODO  此处在检时通过思创getsampleInfo接口获取工位信息，但是那个接口里工位名称为空，后期可以在此处把工位名称传过去，而不是从思创接口获取
                         $data['list']['gzz'][] = $this->getStationPanelAssist2($district,$v['sampleCode']);
                         $data['list']['all'][] = $this->getStationPanelAssist2($district,$v['sampleCode']);
                     }
@@ -3784,6 +3799,8 @@ return $a;
             if ($array){
                 $array['state'] =  $array['static'];
                 unset($array['static']);
+                $array['curNode'] =  $array['BindNode'];
+                unset($array['BindNode']);
             }
             return $array;
         }else{
@@ -3888,6 +3905,9 @@ return $a;
                     }else{
                         $line['type'] = '/';
                         $line['twins_token'] = '/';
+
+
+
                         $line['e_name'] = '/';
                         $line['next_type'] = '/';
                         $line['next_twins_token'] = '/';
@@ -4064,9 +4084,6 @@ return $a;
     //检测信息接口
     public function getTestingInfo()
     {
-
-$a='{"code":1,"msg":"success","data":{"num":{"count":4213,"szx":544,"sn":1206,"sz":574,"sb":978,"other":911},"rate":{"szx":0.13,"sn":0.28,"sb":0.23,"sz":0.13,"other":0.23},"self_check_rate":1,"score":[{"id":6,"year":2022,"quarter":"第二季度","institution":"苏中分中心","score":"100.0","createtime":1648870445,"updatetime":1654083260,"xh":1},{"id":7,"year":2022,"quarter":"第二季度","institution":"苏北分中心","score":"100.0","createtime":1648870445,"updatetime":1654083260,"xh":2},{"id":8,"year":2022,"quarter":"第二季度","institution":"苏南分中心","score":"98.0","createtime":1648870445,"updatetime":1654083260,"xh":3},{"id":5,"year":2022,"quarter":"第二季度","institution":"省中心（电科院）","score":"96.4","createtime":1648870445,"updatetime":1654083260,"xh":4}],"save":{"szx":{"device":0.23,"material":0.30},"sz":{"device":0.24,"material":0.22},"sn":{"device":0.18,"material":0.25},"sb":{"device":0.3,"material":0.27},"other":{"device":0.25,"material":0.17}}}}';
-return $a;
         $ret = array(
             'code' => 1,
             'msg' => 'success',
@@ -4638,7 +4655,6 @@ return $a;
             }
         }
 
-
         if ($other_device_sjhf){
             $arr['other']['device'] = round(($other_device_gdhf - $other_device_sjhf) / $other_device_gdhf , 2);
         }else{
@@ -4745,6 +4761,104 @@ return $a;
 
     }
 
+    /**
+     * 发送结果数据，用以展示结果报告
+     */
+    public function sendReportData()
+    {
+        $ret = array(
+            'code'=>1,
+            'msg'=>'success'
+        );
+        //二次盲样号
+        $s_code = input('param.s_code','','addslashes,trim,htmlspecialchars,strip_tags');
+
+        //物资类别
+        $type = input('param.type','','addslashes,trim,htmlspecialchars,strip_tags');
+        //检测机构
+        $jcjg = input('param.jcjg','','addslashes,trim,htmlspecialchars,strip_tags');
+
+        //参数json字符串
+        $json = input('param.json','','trim,xss_clean');
+        if (!$s_code ||  !$type || !$jcjg  )
+        {
+            $ret['code'] = 0;
+            $ret['msg'] = '错误，二次盲样号、检测机构、物资类别不能为空';
+            return json_encode($ret,320);
+        }
 
 
+
+        if (!in_array($jcjg,['苏南分中心','省中心（电科院）','苏中分中心','苏北分中心']))
+        {
+            $ret['code'] = 3;
+            $ret['msg'] = '错误，检测机构参数非法，请参考接口文档';
+            return json_encode($ret,320);
+        }
+
+        //TODO 处理结果数据字段
+        $json = $this->disposeResultData($json);
+        //$if_exist = Db::table('dky_report_data')->where('s_code',$s_code)->count();
+        //参数列表
+        $param = [
+            's_code'=>$s_code,
+            'jcjg'=>$jcjg,
+            'type'=>$type,
+            'json'=>$json,
+        ];
+//        if ($if_exist)
+//        {
+//            $res = Db::table('dky_report_data')->where('s_code',$s_code)->update($param);
+//        }else{
+            $res = Db::table('dky_report_data')->insert($param);
+        //}
+
+        if ($res === false)
+        {
+            $ret['code'] = 2;
+            $ret['msg'] = '插入失败，请重试';
+        }else{
+            $ret['code'] = 1;
+            $ret['msg'] = 'success,插入成功';
+        }
+
+
+        return json_encode($ret,320);
+    }
+
+
+    public function disposeResultData($json)
+    {
+        //如果json为空，则返回空
+        if (!$json)
+        {
+            return '{}';
+        }
+
+        $json_arr = json_decode($json,true);
+        if (isset($json_arr['testDataMap'])){
+            //获取结果数据数组
+            //$results = $json_arr['testDataMap'];
+            //获取数据映射规则
+            $maps = Db::table('report_mapping')->select();
+            $maps = array_column($maps,null,'key');
+            foreach ($json_arr['testDataMap'] as $k=>$v){
+                if (isset($maps[$k])){
+                    //替换字段名,需将每个字段对应到各个试验
+                    $json_arr['testDataMapPlus'][$maps[$k]['experiment_name']][0][$maps[$k]['name']] = $v.' '.$maps[$k]['unit'];
+                }
+            }
+            unset($json_arr['testDataMap']);
+            unset($json_arr['blindNumber']);
+            unset($json_arr['testIndex']);
+            //将处理完后的json数组转化为json字符串
+            $json_str = json_encode($json_arr,320);
+            return $json_str;
+
+        }else{
+            //如果不存在，则原样返回
+            return $json;
+        }
+
+    }
 }
