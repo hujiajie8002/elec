@@ -26,7 +26,7 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                     [
                         {checkbox: true},
                         {field: 'id', title: __('Id')},
-                        {field: 'district_id', title: __('District_id'),formatter: show_district},
+                        {field: 'district_id', title: __('District_id'),formatter: show_district,operate:false},
                         //{field: 'unity_token', title: __('Unity_token'), operate: 'LIKE'},
                         {field: 'name', title: __('Name'), operate: 'LIKE'},
                         {field: 'avatar', title: __('Avatar'), operate: 'LIKE', events: Table.api.events.image, formatter: Table.api.formatter.image},
