@@ -7,7 +7,7 @@ define(['jquery', 'bootstrap', 'moment', 'moment/locale/zh-cn', 'bootstrap-table
             sidePagination: 'server',
             method: 'get', //请求方法
             toolbar: ".toolbar", //工具栏
-            search: true, //是否启用快速搜索
+            search: false, //是否启用快速搜索
             cache: false,
             commonSearch: true, //是否启用通用搜索
             searchFormVisible: false, //是否始终显示搜索表单
