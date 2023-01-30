@@ -38,6 +38,7 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                         {field: 'device_type', title: __('Device_type'), operate: 'LIKE'},
 
                         {field: 'bind', title: __('operate'),
+                            operate:false,
                             buttons:[{name:'bind',
                                 text:'',
                                 title:__('关联管理'),
