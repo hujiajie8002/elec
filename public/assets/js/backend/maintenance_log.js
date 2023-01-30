@@ -29,7 +29,7 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                         //{field: 'unity_token', title: __('Unity_token'), operate: 'LIKE'},
                         {field: 'district_id', title: __('District_id'),formatter: show_district,operate: false},
                         {field: 'device_no', title: __('Device_no')},
-                        {field: 'type', title: __('Type'), searchList: {"检测设备":__('检测设备'),"工位":__('工位'),"AGV设备":__('Agv设备'),"仓储设备":__('仓储设备')}, formatter: Table.api.formatter.normal},
+                        {field: 'type', title: __('Type'), searchList: {"检测设备":__('检测设备'),"工位":__('工位'),"AGV设备":__('Agv设备'),"仓储设备":__('仓储设备')}},
                         {field: 'name', title: __('Name'), operate: 'LIKE'},
                         {field: 'number', title: __('Number'), operate: 'LIKE'},
                         {field: 'maintenance_at', title: __('Maintenance_at'), operate:'RANGE', addclass:'datetimerange', autocomplete:false},
