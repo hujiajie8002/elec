@@ -24,7 +24,7 @@ define(['jquery', 'bootstrap', 'moment', 'moment/locale/zh-cn', 'bootstrap-table
                         return !isNaN($(cell).text()) ? '\\@' : '';
                     },
                 },
-                ignoreColumn: [0, 'operate'] //默认不导出第一列(checkbox)与操作(operate)列
+                ignoreColumn: [0, 'operate',-1,'status','avatar','image'] //默认不导出第一列(checkbox)与操作(operate)列
             },
             pageSize: localStorage.getItem("pagesize") || 10,
             pageList: [10, 15, 20, 25, 50, 'All'],
