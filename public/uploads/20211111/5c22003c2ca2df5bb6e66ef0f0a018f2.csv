@@ -1,0 +1,3 @@
+主键id,姓名,头像,性别,工号,职务,技能等级,类型,属性,入职日期,工龄,uwb_id,状态,创建时间,更新时间,Create_ip,Update_ip
+2,林蒙22,<img class="img-sm img-center" src="/assets/img/blank.gif">,<span class="text-success">女</span>,HC0000000001,主任,<span class="text-primary">Level-1</span>,<span class="text-primary">A级检测人员</span>,<span class="text-success">材料</span>,2021/5/19,0,hc789,<span class="text-success"><i class="fa fa-circle"></i> 离职</span>,无,2021/11/11 14:18,,
+1,杨勇1,<img class="img-sm img-center" src="/uploads/20211111/277b65ca9dd1069d1a2493c10adb7833.jpg">,<span class="text-primary">男</span>,F7689456,主任,<span class="text-primary">Level-1</span>,<span class="text-primary">A级检测人员</span>,<span class="text-primary">设备</span>,2021/11/1,0,,<span class="text-primary"><i class="fa fa-circle"></i> 在职</span>,无,无,-,-
