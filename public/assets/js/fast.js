@@ -141,6 +141,7 @@ define(['jquery', 'bootstrap', 'toastr', 'layer', 'lang'], function ($, undefine
                     area: area,
                     content: url,
                     zIndex: Layer.zIndex,
+                    id:'flustone',// 增加id，限制只能弹窗一个
                     success: function (layero, index) {
                         var that = this;
                         //存储callback事件
