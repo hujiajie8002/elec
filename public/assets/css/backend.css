@@ -790,7 +790,7 @@ form.form-horizontal .control-label {
 }
 table.table-nowrap tbody > tr > td,
 table.table-nowrap thead > tr > th {
-  white-space: nowrap;
+  white-space: pre;
 }
 .fixed-table-container thead th .sortable {
   padding-right: 0;
