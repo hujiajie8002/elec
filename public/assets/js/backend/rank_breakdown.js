@@ -65,6 +65,12 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
 
         },
         add: function () {
+            window.setTimeout(function (){
+                let num = $('#c-num').val();
+                let score = $('#c-score').val();
+                $('#c-sum').val(num * score);
+            },1000);
+
             //获取rank_token值，自动填充
             function GetQueryString(name) {
                 var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)","i");
@@ -99,10 +105,24 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                 let score = $('#c-score').val();
                 $('#c-sum').val(num * score);
             });
+            $('#c-num,#c-score').on('blur',function (){
+                let num = $('#c-num').val();
+                let score = $('#c-score').val();
+                $('#c-sum').val(num * score);
+            });
+            $('#c-num,#c-score').on('focus',function (){
+                let num = $('#c-num').val();
+                let score = $('#c-score').val();
+                $('#c-sum').val(num * score);
+            });
             Controller.api.bindevent();
         },
         edit: function () {
-
+            window.setTimeout(function (){
+                let num = $('#c-num').val();
+                let score = $('#c-score').val();
+                $('#c-sum').val(num * score);
+            },1000);
             let list = Config.list;
             let name = $("#c-name").val();
             for (let i in list){
@@ -123,6 +143,16 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
             });
 
             $('#c-num,#c-score').on('change',function (){
+                let num = $('#c-num').val();
+                let score = $('#c-score').val();
+                $('#c-sum').val(num * score);
+            });
+            $('#c-num,#c-score').on('blur',function (){
+                let num = $('#c-num').val();
+                let score = $('#c-score').val();
+                $('#c-sum').val(num * score);
+            });
+            $('#c-num,#c-score').on('focus',function (){
                 let num = $('#c-num').val();
                 let score = $('#c-score').val();
                 $('#c-sum').val(num * score);

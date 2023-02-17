@@ -79,7 +79,6 @@ class RankBreakdown extends Backend
                         $this->error('扣分项内容不能为空');
                     }
 
-
                     $result = $this->model->allowField(true)->save($params);
                     Db::commit();
                 } catch (ValidateException $e) {

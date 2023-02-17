@@ -1062,15 +1062,11 @@ trait Backend
             'rank/add',
             'rank/edit',
             'rank/del',
-            'rank_breakdown',
-            'rank_breakdown/add',
-            'rank_breakdown/edit',
-            'rank_breakdown/del',
         );
         //省中心普通用户无操作权限
         if ($username == 'szx_general'){
             Db::rollback();
-            $error_info = '您无权操作此数据，请注意各分中心只能维护分中心自己的数据~';
+            $error_info = '您无权操作此数据，省中心普通用户仅有查看权限';
             $this->error_info = $error_info;
             Session::set('fzyq_error_info',$error_info);
             $this->error($error_info);
@@ -1081,7 +1077,7 @@ trait Backend
             {
                 if ($params['district_id'] != $reflect[$username]){
                     Db::rollback();
-                    $error_info = '您无权操作此数据，请注意各分中心只能维护分中心自己的数据~';
+                    $error_info = '您无权操作此数据，请注意各分中心只能维护分中心自己的数据1~';
                     $this->error_info = $error_info;
                     Session::set('fzyq_error_info',$error_info);
                     $this->error($error_info);                }
@@ -1094,7 +1090,7 @@ trait Backend
             {
                 if ($params['name'] != $reflect2[$username]){
                     Db::rollback();
-                    $error_info = '您无权操作此数据，请注意各分中心只能维护分中心自己的数据~';
+                    $error_info = '您无权操作此数据，请注意各分中心只能维护分中心自己的数据2~';
                     $this->error_info = $error_info;
                     Session::set('fzyq_error_info',$error_info);
                     $this->error($error_info);                  }
@@ -1107,19 +1103,19 @@ trait Backend
             {
                 if ($params['institution'] != $reflect2[$username]){
                     Db::rollback();
-                    $error_info = '您无权操作此数据，请注意各分中心只能维护分中心自己的数据~';
+                    $error_info = '您无权操作此数据，请注意各分中心只能维护分中心自己的数据3~';
                     $this->error_info = $error_info;
                     Session::set('fzyq_error_info',$error_info);
-                    $this->error($error_info);                  }
+                    $this->error($error_info);
+                }
             }
         }
-
     }
 
     //模糊查询$haystack中是否含有$needle
     public function search_assistant($needle,$haystack){
         foreach ($haystack as $v){
-            if (strpos($needle,$v) !== false){
+            if (strpos($v,$needle) !== false){
                 return true;
             }
         }
