@@ -1077,7 +1077,7 @@ trait Backend
             {
                 if ($params['district_id'] != $reflect[$username]){
                     Db::rollback();
-                    $error_info = '您无权操作此数据，请注意各分中心只能维护分中心自己的数据1~';
+                    $error_info = '您无权操作此数据，请注意各分中心只能维护分中心自己的数据~';
                     $this->error_info = $error_info;
                     Session::set('fzyq_error_info',$error_info);
                     $this->error($error_info);                }
@@ -1090,7 +1090,7 @@ trait Backend
             {
                 if ($params['name'] != $reflect2[$username]){
                     Db::rollback();
-                    $error_info = '您无权操作此数据，请注意各分中心只能维护分中心自己的数据2~';
+                    $error_info = '您无权操作此数据，请注意各分中心只能维护分中心自己的数据~';
                     $this->error_info = $error_info;
                     Session::set('fzyq_error_info',$error_info);
                     $this->error($error_info);                  }
@@ -1103,7 +1103,7 @@ trait Backend
             {
                 if ($params['institution'] != $reflect2[$username]){
                     Db::rollback();
-                    $error_info = '您无权操作此数据，请注意各分中心只能维护分中心自己的数据3~';
+                    $error_info = '您无权操作此数据，请注意各分中心只能维护分中心自己的数据~';
                     $this->error_info = $error_info;
                     Session::set('fzyq_error_info',$error_info);
                     $this->error($error_info);

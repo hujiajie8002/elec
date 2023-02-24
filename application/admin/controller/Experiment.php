@@ -308,6 +308,8 @@ class Experiment extends Backend
         if ($qs_number != 0){
             $qs_pass_rate = round($qs_pass_number / $qs_number,2);
         }else{
+            // 避免除法报错，给默认值
+            $qs_number = 1;
             $qs_pass_rate = 0;
         }
 

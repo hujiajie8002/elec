@@ -9,8 +9,8 @@
                         {:build_toolbar('refresh')}
                         <a class="btn btn-info btn-multi btn-disabled disabled {:$auth->check('laboratory_info/restore')?'':'hide'}" href="javascript:;" data-url="laboratory_info/restore" data-action="restore"><i class="fa fa-rotate-left"></i> {:__('Restore')}</a>
                         <a class="btn btn-danger btn-multi btn-disabled disabled {:$auth->check('laboratory_info/destroy')?'':'hide'}" href="javascript:;" data-url="laboratory_info/destroy" data-action="destroy"><i class="fa fa-times"></i> {:__('Destroy')}</a>
-                        <a class="btn btn-success btn-restoreall {:$auth->check('laboratory_info/restore')?'':'hide'}" href="javascript:;" data-url="laboratory_info/restore" title="{:__('Restore all')}"><i class="fa fa-rotate-left"></i> {:__('Restore all')}</a>
-                        <a class="btn btn-danger btn-destroyall {:$auth->check('laboratory_info/destroy')?'':'hide'}" href="javascript:;" data-url="laboratory_info/destroy" title="{:__('Destroy all')}"><i class="fa fa-times"></i> {:__('Destroy all')}</a>
+<!--                        <a class="btn btn-success btn-restoreall {:$auth->check('laboratory_info/restore')?'':'hide'}" href="javascript:;" data-url="laboratory_info/restore" title="{:__('Restore all')}"><i class="fa fa-rotate-left"></i> {:__('Restore all')}</a>-->
+<!--                        <a class="btn btn-danger btn-destroyall {:$auth->check('laboratory_info/destroy')?'':'hide'}" href="javascript:;" data-url="laboratory_info/destroy" title="{:__('Destroy all')}"><i class="fa fa-times"></i> {:__('Destroy all')}</a>-->
                     </div>
                     <table id="table" class="table table-striped table-bordered table-hover"
                            data-operate-restore="{:$auth->check('laboratory_info/restore')}"

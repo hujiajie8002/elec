@@ -16,6 +16,7 @@ use think\Validate;
 class Profile extends Backend
 {
 
+    //protected $noNeedRight = ['index','update'];
     protected $searchFields = 'id,title';
 
     /**
