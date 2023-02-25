@@ -37,6 +37,7 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                 ]
             });
 
+
             function show_staff(value,row,index)
             {
                 let staff = [];
@@ -59,9 +60,9 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                      staff_name_str = '';
                     if (ids_arr){
                         for(let i in ids_arr){
-                            console.log(ids_arr[i])
-                            console.log(staff[ids_arr[i]]['name'])
-                            staff_name_str += staff[ids_arr[i]]['name']+',';
+                            if (staff[ids_arr[i]] !== undefined){
+                                staff_name_str += (staff[ids_arr[i]].name) +',';
+                            }
 
                         }
                     }
