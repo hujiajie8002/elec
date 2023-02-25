@@ -29,13 +29,49 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                         {field: 'mission', title: __('Mission')},
                         //{field: 'sample_index', title: __('Sample_index'), operate: 'LIKE'},
                         {field: 'experiment', title: __('Experiment'), operate: 'LIKE'},
-                        {field: 'dky_staff_ids', title: __('Dky_staff_ids'), operate: 'LIKE'},
+                        {field: 'dky_staff_ids', title: __('Dky_staff_ids'), operate: 'LIKE',formatter: show_staff},
                         {field: 'createtime', title: __('Createtime'), operate:'RANGE', addclass:'datetimerange', autocomplete:false, formatter: Table.api.formatter.datetime},
                         //{field: 'updatetime', title: __('Updatetime'), operate:'RANGE', addclass:'datetimerange', autocomplete:false, formatter: Table.api.formatter.datetime},
                         {field: 'operate', title: __('分配检验人'), table: table, events: Table.api.events.operate, formatter: Table.api.formatter.operate}
                     ]
                 ]
             });
+
+            function show_staff(value,row,index)
+            {
+                let staff = [];
+                $.ajax({
+                    type:'post',
+                    url:'dky_staff/getStaff',
+                    async:false,
+                    dataType:'json',
+                    success:function (data_json){
+                        staff = JSON.parse(data_json);
+                    },
+                    error:function (){
+                        alert('网络繁忙，请稍后重试');
+                    }
+                });
+                let ids = row.dky_staff_ids;
+                let staff_name_str = '';
+                if (ids){
+                    let ids_arr = ids.split(',')
+                     staff_name_str = '';
+                    if (ids_arr){
+                        for(let i in ids_arr){
+                            console.log(ids_arr[i])
+                            console.log(staff[ids_arr[i]]['name'])
+                            staff_name_str += staff[ids_arr[i]]['name']+',';
+
+                        }
+                    }
+                    return staff_name_str.slice(0,staff_name_str.length-1);
+                }else{
+                    return '-'
+                }
+
+
+            }
 
             // 为表格绑定事件
             Table.api.bindevent(table);

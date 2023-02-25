@@ -14,7 +14,7 @@ use think\exception\ValidateException;
  */
 class DkyStaff extends Backend
 {
-    
+    protected $noNeedLogin = ['getStaff'];
     /**
      * DkyStaff模型对象
      * @var \app\admin\model\DkyStaff
@@ -44,6 +44,11 @@ class DkyStaff extends Backend
      */
 
 
+    public function getStaff(){
+        $res =  Db::table('dky_staff')->select();
+        $res = array_column($res,null,'id');
+        return json_encode($res,320);
+    }
 
 
 
