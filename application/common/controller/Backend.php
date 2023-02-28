@@ -424,6 +424,55 @@ class Backend extends Controller
             $this->model->alias($alias);
         }
         $model = $this->model;
+
+        // 特殊处理机构搜索
+        $baseUrl = request()->baseUrl();
+        $baseUrl = substr($baseUrl,9);
+        //所有需要区分机构名称的方法
+        $arr = array(
+            'dky_device',
+            'dky_station',
+            'dky_agv',
+            'dky_storage_rack',
+            'maintenance_log',
+            'dky_testing_problem',
+            'dky_device/index',
+            'dky_station/index',
+            'dky_agv/index',
+            'dky_storage_rack/index',
+            'maintenance_log/index',
+            'dky_testing_problem/index',
+            'dky_staff',
+            'dky_staff/index'
+
+        );
+        if (in_array($baseUrl,$arr)){
+            if (!empty($where)){
+                foreach ($where as $k=>$v){
+                    if (isset($v[0]) && isset($v[2])){
+                        if ($v[0] == 'district_id'){
+                            unset($where[$k]);
+                              $name_reflection = [
+                                '省中心（电科院）'=>1,
+                                '省中心(电科院)'=>1,
+                                '省中心'=>1,
+                                '苏中分中心'=>3,
+                                '苏中'=>3,
+                                '苏南分中心'=>2,
+                                '苏南'=>2,
+                                '苏北分中心'=>4,
+                                '苏北'=>4,
+                            ];
+                            if (isset($name_reflection[$v[2]])){
+                                $where[] = ['district_id','=',$name_reflection[$v[2]]];
+                            }
+
+                        }
+                    }
+                }
+            }
+        }
+
         $where = function ($query) use ($where, $alias, $bind, &$model) {
             if (!empty($model)) {
                 $model->alias($alias);

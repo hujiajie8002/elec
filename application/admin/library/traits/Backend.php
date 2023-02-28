@@ -109,6 +109,7 @@ trait Backend
             if ($this->request->request('keyField')) {
                 return $this->selectpage();
             }
+
             list($where, $sort, $order, $offset, $limit) = $this->buildparams();
 
             if (($username == 'snfzx' || $username == 'szfzx' || $username == 'sbfzx') && in_array($baseUrl,$arr))

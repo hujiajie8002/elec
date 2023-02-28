@@ -29,7 +29,7 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                         {checkbox: true},
                         {field: 'id', title: __('Id')},
 
-                        {field: 'district_id', title: __('District_id'),formatter: show_district,operate: false},
+                        {field: 'district_id', title: __('District_id'),formatter: show_district},
                         {field: 'device_no', title: __('device_no')},
                         {field: 'unity_token', title: __('Unity_token'), operate: 'LIKE'},
                         {field: 'station_token', title: __('Station_token'), operate: 'LIKE'},
