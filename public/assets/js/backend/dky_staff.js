@@ -136,9 +136,15 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
         },
 
         add: function () {
+            $('#faupload-avatar').on('click',function (){
+                layer.msg('请选择图片格式');
+            });
             Controller.api.bindevent();
         },
         edit: function () {
+            $('#faupload-avatar').on('click',function (){
+                layer.msg('请选择图片格式');
+            });
             Controller.api.bindevent();
         },
         api: {

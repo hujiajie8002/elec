@@ -465,6 +465,9 @@ class Backend extends Controller
                             ];
                             if (isset($name_reflection[$v[2]])){
                                 $where[] = ['district_id','=',$name_reflection[$v[2]]];
+                            }else{
+                                // 给一个搜不到的区域
+                                $where[] = ['district_id','=',999];
                             }
 
                         }
