@@ -83,6 +83,7 @@ class RankBreakdown extends Backend
                         $validate = is_bool($this->modelValidate) ? ($this->modelSceneValidate ? $name . '.add' : $name) : $this->modelValidate;
                         $this->model->validateFailException(true)->validate($validate);
                     }
+
                     $id = $params['rank_token'];
                     //查找对应的year，quarter，institution
                     $line = Db::table('rank')->where('id',$id)->find();
@@ -93,6 +94,8 @@ class RankBreakdown extends Backend
                     if (!$params['content']){
                         $this->error('扣分项内容不能为空');
                     }
+
+                    $this->checkIsThisQuarter($params,$line['year']);
 
                     $result = $this->model->allowField(true)->save($params);
                     Db::commit();
@@ -107,7 +110,7 @@ class RankBreakdown extends Backend
                     $this->error($e->getMessage());
                 } catch (Exception $e) {
                     Db::rollback();
-                    $this->error(Session::get('fzyq_error_info')??$e->getMessage());
+                    $this->error(Session::get('fzyq_error_info')?? Session::get('ph_error') ?? $e->getMessage());
                 }
                 if ($result !== false) {
                     $this->success();
@@ -157,11 +160,13 @@ class RankBreakdown extends Backend
                         $validate = is_bool($this->modelValidate) ? ($this->modelSceneValidate ? $name . '.edit' : $name) : $this->modelValidate;
                         $row->validateFailException(true)->validate($validate);
                     }
+
+                    $this->checkIsThisQuarter($params,$params['year']);
+
                     if (!$params['content']){
                         $this->error('扣分项内容不能为空');
                     }
-
-
+                    
                     $result = $row->allowField(true)->save($params);
                     Db::commit();
                     // 请求下前台接口，触发计算评分功能
@@ -175,7 +180,7 @@ class RankBreakdown extends Backend
                     $this->error($e->getMessage());
                 } catch (Exception $e) {
                     Db::rollback();
-                    $this->error(Session::get('fzyq_error_info')??$e->getMessage());
+                    $this->error(Session::get('fzyq_error_info')?? Session::get('ph_error') ?? $e->getMessage());
                 }
                 if ($result !== false) {
                     $this->success();
@@ -219,6 +224,8 @@ class RankBreakdown extends Backend
             try {
                 foreach ($list as $k => $v) {
                     $this->fzyq($v);
+                    $info = Db::table('rank_breakdown')->where('id',$ids)->find();
+                    $this->checkIsThisQuarter($info,$info['year']);
                     $count += $v->delete();
                 }
                 Db::commit();
@@ -230,7 +237,7 @@ class RankBreakdown extends Backend
                 $this->error($e->getMessage());
             } catch (Exception $e) {
                 Db::rollback();
-                $this->error(Session::get('fzyq_error_info')??$e->getMessage());
+                $this->error(Session::get('fzyq_error_info')?? Session::get('ph_error') ?? $e->getMessage());
             }
             if ($count) {
                 $this->success();
@@ -241,4 +248,24 @@ class RankBreakdown extends Backend
         $this->error(__('Parameter %s can not be empty', 'ids'));
     }
 
+    public function checkIsThisQuarter($params,$year_old)
+    {
+        if (!empty($params['year']) && !empty($params['quarter'])){
+            $quarter_reflection = array(
+                '第一季度'=>'1',
+                '第二季度'=>'2',
+                '第三季度'=>'3',
+                '第四季度'=>'4',
+            );
+            $quarter = ceil(date('m') / 3);
+            $year = date('Y');
+            if (isset($quarter_reflection[$params['quarter']])){
+                if ($quarter_reflection[$params['quarter']] != $quarter || $year_old != $year  ){
+                    $error_info = '仅可以对当季度排行榜分值进行修改~';
+                    Session::set('ph_error',$error_info);
+                    $this->error($error_info);
+                }
+            }
+        }
+    }
 }
