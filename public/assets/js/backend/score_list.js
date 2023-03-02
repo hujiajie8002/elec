@@ -100,9 +100,41 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
         },
 
         add: function () {
+            $('#c-score').on('click change blur focus input',function (){
+
+                let score = $('#c-score').val();
+                let error = '';
+                if (score>0){
+                    $('#c-score').val(0-score)
+                    error+='分值请填写负数 ';
+                }
+                if ( score < -100){
+                    $('#c-score').val(-100)
+                    error+='分值最小为-100 ';
+                }
+                if (error){
+                    layer.msg(error)
+                }
+            });
             Controller.api.bindevent();
         },
         edit: function () {
+            $('#c-score').on('click change blur focus input',function (){
+
+                let score = $('#c-score').val();
+                let error = '';
+                if (score>0){
+                    $('#c-score').val(0-score)
+                    error+='分值请填写负数 ';
+                }
+                if ( score < -100){
+                    $('#c-score').val(-100)
+                    error+='分值最小为-100 ';
+                }
+                if (error){
+                    layer.msg(error)
+                }
+            });
             Controller.api.bindevent();
         },
         api: {

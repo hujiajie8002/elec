@@ -4564,7 +4564,7 @@ class Experiment extends Backend
         ->where('quarter',$quarter_name)
         ->where('institution',$institution)
         ->sum('sum');
-        $score = 100 + $rank_breakdown_sum;
+        $score = (100 + $rank_breakdown_sum >= 0) ? (100 + $rank_breakdown_sum):0;
         Db::table('rank')->where('id',$id)->update(['score'=>$score,'updatetime'=>time()]);
         return $score;
     }

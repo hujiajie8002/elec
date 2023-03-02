@@ -7,6 +7,7 @@ use Exception;
 use think\Db;
 use think\exception\PDOException;
 use think\exception\ValidateException;
+use think\Route;
 use think\Session;
 
 /**
@@ -42,6 +43,20 @@ class RankBreakdown extends Backend
      * 需要将application/admin/library/traits/Backend.php中对应的方法复制到当前控制器,然后进行修改
      */
 
+
+    public function getUrl($url){
+        //$headerArray =array("Content-type:application/json;","Accept:application/json");
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+        //设为TRUE把curl_exec()结果转化为字串，而不是直接输出
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        //curl_setopt($ch,CURLOPT_HTTPHEADER,$headerArray);
+        $output = curl_exec($ch);
+        curl_close($ch);
+        return $output;
+    }
 
     /**
      * 添加
@@ -81,6 +96,9 @@ class RankBreakdown extends Backend
 
                     $result = $this->model->allowField(true)->save($params);
                     Db::commit();
+                    // 请求下前台接口，触发计算评分功能
+                   $class = new Experiment();
+                   $class->getTestingInfo();
                 } catch (ValidateException $e) {
                     Db::rollback();
                     $this->error($e->getMessage());
@@ -98,6 +116,7 @@ class RankBreakdown extends Backend
                 }
             }
             $this->error(__('Parameter %s can not be empty', ''));
+
         }
 
         //获取扣分项列表
@@ -145,6 +164,9 @@ class RankBreakdown extends Backend
 
                     $result = $row->allowField(true)->save($params);
                     Db::commit();
+                    // 请求下前台接口，触发计算评分功能
+                    $class = new Experiment();
+                    $class->getTestingInfo();
                 } catch (ValidateException $e) {
                     Db::rollback();
                     $this->error($e->getMessage());
@@ -175,5 +197,48 @@ class RankBreakdown extends Backend
     }
 
 
+    /**
+     * 删除
+     */
+    public function del($ids = "")
+    {
+        if (!$this->request->isPost()) {
+            $this->error(__("Invalid parameters"));
+        }
+
+        $ids = $ids ? $ids : $this->request->post("ids");
+        if ($ids) {
+            $pk = $this->model->getPk();
+            $adminIds = $this->getDataLimitAdminIds();
+            if (is_array($adminIds)) {
+                $this->model->where($this->dataLimitField, 'in', $adminIds);
+            }
+            $list = $this->model->where($pk, 'in', $ids)->select();
+            $count = 0;
+            Db::startTrans();
+            try {
+                foreach ($list as $k => $v) {
+                    $this->fzyq($v);
+                    $count += $v->delete();
+                }
+                Db::commit();
+                // 请求下前台接口，触发计算评分功能
+                $class = new Experiment();
+                $class->getTestingInfo();
+            } catch (PDOException $e) {
+                Db::rollback();
+                $this->error($e->getMessage());
+            } catch (Exception $e) {
+                Db::rollback();
+                $this->error(Session::get('fzyq_error_info')??$e->getMessage());
+            }
+            if ($count) {
+                $this->success();
+            } else {
+                $this->error(__('No rows were deleted'));
+            }
+        }
+        $this->error(__('Parameter %s can not be empty', 'ids'));
+    }
 
 }

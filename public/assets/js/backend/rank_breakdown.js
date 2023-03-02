@@ -88,8 +88,6 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                     $("#c-score").val(list[i]['score']);
                 }
             }
-
-
             $('#c-name').on('change',function (){
                 let name = $("#c-name").val();
                 for (let i in list){
@@ -97,24 +95,39 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                         $("#c-score").val(list[i]['score']);
                     }
                 }
-
+                $('#c-num').click();
             });
 
-            $('#c-num,#c-score').on('change',function (){
+            $('#c-num,#c-score').on('click change blur focus input',function (){
                 let num = $('#c-num').val();
                 let score = $('#c-score').val();
-                $('#c-sum').val(num * score);
+                let sum = $('#c-sum').val();
+                let error = '';
+                if (score>=0){
+                    $('#c-score').val(0-score)
+                    error+='分值请填写负数 ';
+                }
+                if ( score < -100){
+                    $('#c-score').val(-100)
+                    error+='分值最小为-100 ';
+                }
+                if (!error){
+                    $('#c-sum').val(num * score);
+                }
+                // 由于上面c-sum重新赋值，此处重新取值
+                sum = $('#c-sum').val();
+                if (sum < -100 || sum>0){
+                    $('#c-num').val(0);
+                    $('#c-sum').val(0);
+                    error +='扣分值最小为-100且必须为负数，请重新输入正确的数量';
+                }
+
+                if (error){
+                    layer.msg(error)
+                }
+
             });
-            $('#c-num,#c-score').on('blur',function (){
-                let num = $('#c-num').val();
-                let score = $('#c-score').val();
-                $('#c-sum').val(num * score);
-            });
-            $('#c-num,#c-score').on('focus',function (){
-                let num = $('#c-num').val();
-                let score = $('#c-score').val();
-                $('#c-sum').val(num * score);
-            });
+            $('#c-num').click();
             Controller.api.bindevent();
         },
         edit: function () {
@@ -139,24 +152,40 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                         $("#c-score").val(list[i]['score']);
                     }
                 }
-
+                $('#c-num').click();
             });
 
-            $('#c-num,#c-score').on('change',function (){
+
+            $('#c-num,#c-score').on('click change blur focus input',function (){
                 let num = $('#c-num').val();
                 let score = $('#c-score').val();
-                $('#c-sum').val(num * score);
+                let sum = $('#c-sum').val();
+                let error = '';
+                if (score>=0){
+                    $('#c-score').val(0-score)
+                    error+='分值请填写负数 ';
+                }
+                if ( score < -100){
+                    $('#c-score').val(-100)
+                    error+='分值最小为-100 ';
+                }
+                if (!error){
+                    $('#c-sum').val(num * score);
+                }
+                sum = $('#c-sum').val();
+                if (sum < -100 || sum>0){
+                    $('#c-num').val(0);
+                    $('#c-sum').val(0);
+                    error +='扣分值最小为-100且必须为负数，请重新输入正确的数量';
+                }
+
+                if (error){
+                    layer.msg(error)
+                }
             });
-            $('#c-num,#c-score').on('blur',function (){
-                let num = $('#c-num').val();
-                let score = $('#c-score').val();
-                $('#c-sum').val(num * score);
-            });
-            $('#c-num,#c-score').on('focus',function (){
-                let num = $('#c-num').val();
-                let score = $('#c-score').val();
-                $('#c-sum').val(num * score);
-            });
+
+            $('#c-num').click();
+
             Controller.api.bindevent();
         },
         api: {

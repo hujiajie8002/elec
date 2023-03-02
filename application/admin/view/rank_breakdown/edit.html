@@ -57,7 +57,7 @@
     <div class="form-group">
         <label class="control-label col-xs-12 col-sm-2">{:__('Score')}:</label>
         <div class="col-xs-12 col-sm-8">
-            <input id="c-score" class="form-control" step="0.1" name="row[score]" type="number" value="{$row.score|htmlentities}" oninput="if(value.length > 4) value=value.slice(0, 4)" >
+            <input id="c-score" class="form-control" step="0.1" name="row[score]" type="number" value="{$row.score|htmlentities}" oninput="if(value > 0){ value=0-value} if(value.length > 4) value=value.slice(0, 4)" readonly>
         </div>
     </div>
     <div class="form-group">
@@ -69,7 +69,7 @@
     <div class="form-group">
         <label class="control-label col-xs-12 col-sm-2">{:__('Sum')}:</label>
         <div class="col-xs-12 col-sm-8">
-            <input id="c-sum" class="form-control" step="0.1" name="row[sum]" type="number" value="{$row.sum|htmlentities}"  oninput="if(value.length > 4) value=value.slice(0, 4)">
+            <input id="c-sum" class="form-control" step="0.1" name="row[sum]" type="number" value="{$row.sum|htmlentities}"  oninput="if(value.length > 4) value=value.slice(0, 4)" readonly>
         </div>
     </div>
     <div class="form-group">
