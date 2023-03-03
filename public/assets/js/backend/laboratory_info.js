@@ -109,13 +109,19 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
 
         add: function () {
             $('#faupload-image').on('click',function (){
-                layer.msg('请选择图片格式');
+                layer.msg('请选择图片格式',{
+                    icon: 1,
+                    time: 10000 //2秒关闭（如果不配置，默认是3秒）
+                });
             });
             Controller.api.bindevent();
         },
         edit: function () {
             $('#faupload-image').on('click',function (){
-                layer.msg('请选择图片格式');
+                layer.msg('请选择图片格式',{
+                    icon: 1,
+                    time: 10000 //2秒关闭（如果不配置，默认是3秒）
+                });
             });
             Controller.api.bindevent();
         },
