@@ -245,6 +245,7 @@ define(['jquery', 'bootstrap', 'dropzone', 'template'], function ($, undefined, 
                                 }
                             },
                             error: function (file, response, xhr) {
+                                layer.alert('请选择图片格式',{icon:2,time:5000});
 
                             },
                             uploadprogress: function (file, progress, bytesSent) {
